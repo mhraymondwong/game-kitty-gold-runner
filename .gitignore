@@ -1,4 +1,15 @@
 .godot/
-build/
-*.import
-.mono/
+*.translation
+.import/
+*.pck
+.DS_Store
+user://
+*.tmp
+# Keep Godot PWA binaries tracked for GitHub Pages
+!build/pwa/*.pck
+!build/pwa/*.wasm
+build/*.zip
+*.zip
+
+# Godot may write .import next to exported icons; never publish those
+build/pwa/*.import
