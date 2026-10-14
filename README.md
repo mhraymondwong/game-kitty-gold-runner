@@ -1,23 +1,25 @@
 # 貓咪金幣跑酷（kitty-gold-runner）
 
-可愛小花貓無盡跑酷：自動往前跑，跳躍撿金幣、躲障礙。
+橫向無盡跑酷：可愛小花貓自動往前跑，跳躍撿金幣、躲避障礙。
 
-## 開啟
+## Play
+
+- Live: https://mhraymondwong.github.io/game-kitty-gold-runner/
+- License: MIT
+
+## Local
 
 ```bash
 cd "/workspace/agents/Game Designer/kitty-gold-runner"
 /home/box/bin/godot --path .
 ```
 
-操作：空白鍵／點擊／觸控 = 跳躍。
+## Web export
 
-## 功能
+```bash
+mkdir -p build/pwa
+/home/box/bin/godot --headless --path . --export-release Web build/pwa/index.html
+python3 tools/patch_pwa_html.py
+```
 
-- 標題 → 開始 → 撿金幣／躲障礙 → 遊戲結束 → 再玩一次
-- 速度隨時間加快
-- 繁中介面
-- Web／PWA 匯出在 `build/web/`
-
-## 授權
-
-MIT License — 見 `LICENSE`。
+GitHub Pages currently serves `docs/` (legacy). Actions workflow template: `tools/deploy-pages.yml` (also intended as `.github/workflows/deploy-pages.yml`).
