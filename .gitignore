@@ -8,8 +8,11 @@ user://
 # Keep Godot PWA binaries tracked for GitHub Pages
 !build/pwa/*.pck
 !build/pwa/*.wasm
+!docs/*.pck
+!docs/*.wasm
 build/*.zip
 *.zip
 
 # Godot may write .import next to exported icons; never publish those
 build/pwa/*.import
+docs/*.import
