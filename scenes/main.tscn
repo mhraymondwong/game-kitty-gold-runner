@@ -1,0 +1,160 @@
+[gd_scene load_steps=10 format=3 uid="uid://main001rc"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_gm"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="3_player"]
+[ext_resource type="Script" path="res://scripts/ground_scroll.gd" id="4_ground"]
+[ext_resource type="Script" path="res://scripts/parallax.gd" id="5_para"]
+[ext_resource type="Script" path="res://scripts/spawner.gd" id="6_spawn"]
+[ext_resource type="Texture2D" path="res://assets/sky.png" id="7_sky"]
+[ext_resource type="Texture2D" path="res://assets/cat_idle.png" id="8_cat"]
+
+[sub_resource type="RectangleShape2D" id="FloorShape"]
+size = Vector2(2000, 40)
+
+[sub_resource type="RectangleShape2D" id="PlayerShape"]
+size = Vector2(40, 48)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("2_gm")
+
+[node name="Sky" type="Sprite2D" parent="."]
+z_index = -20
+position = Vector2(640, 360)
+texture = ExtResource("7_sky")
+
+[node name="Parallax" type="Node2D" parent="."]
+z_index = -10
+script = ExtResource("5_para")
+
+[node name="GroundScroll" type="Node2D" parent="."]
+z_index = -1
+script = ExtResource("4_ground")
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(640, 620)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(220, 580)
+collision_layer = 2
+collision_mask = 1
+floor_stop_on_slope = true
+script = ExtResource("3_player")
+
+[node name="Sprite" type="Sprite2D" parent="Player"]
+position = Vector2(0, -8)
+texture = ExtResource("8_cat")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(0, -4)
+shape = SubResource("PlayerShape")
+
+[node name="AnimTimer" type="Timer" parent="Player"]
+wait_time = 0.12
+
+[node name="Spawner" type="Node2D" parent="."]
+script = ExtResource("6_spawn")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="CoinLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 320.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0.15, 0.1, 0.05, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 28
+text = "金幣：0"
+
+[node name="DistLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 56.0
+offset_right = 320.0
+offset_bottom = 96.0
+theme_override_colors/font_color = Color(0.15, 0.1, 0.05, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 24
+text = "距離：0"
+
+[node name="Hint" type="Label" parent="HUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -280.0
+offset_top = 20.0
+offset_right = -24.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(0.25, 0.25, 0.3, 0.85)
+theme_override_font_sizes/font_size = 18
+text = "空白鍵／點擊＝跳躍"
+horizontal_alignment = 2
+
+[node name="GameOver" type="CanvasLayer" parent="."]
+layer = 10
+visible = false
+
+[node name="Dim" type="ColorRect" parent="GameOver"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="Center" type="CenterContainer" parent="GameOver"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="GameOver/Center"]
+custom_minimum_size = Vector2(420, 280)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="GameOver/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Title" type="Label" parent="GameOver/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "遊戲結束"
+horizontal_alignment = 1
+
+[node name="Score" type="Label" parent="GameOver/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "金幣 0　距離 0"
+horizontal_alignment = 1
+
+[node name="Retry" type="Button" parent="GameOver/Center/Panel/VBox"]
+custom_minimum_size = Vector2(240, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 26
+text = "再玩一次"
+
+[node name="ToTitle" type="Button" parent="GameOver/Center/Panel/VBox"]
+custom_minimum_size = Vector2(240, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 22
+text = "回到標題"
